@@ -1,0 +1,15 @@
+#include <stdio.h>
+#include <math.h>
+
+int main(void) {
+    int D, y, x, highestMinx, IdealD;
+	for (D = 1; D <= 1000; D++) {
+	    y = 1;
+		x = sqrt(1 + D*y*y);
+		while (floor(x) != x) {
+		    y++;
+			x = sqrt(1 + D*y*y);
+		}
+		
+	}
+}

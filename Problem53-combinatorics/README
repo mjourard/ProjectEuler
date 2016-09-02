@@ -1,0 +1,28 @@
+Problem:
+There are exactly ten ways of selecting three from five, 12345:
+
+123, 124, 125, 134, 135, 145, 234, 235, 245, and 345
+
+In combinatorics, we use the notation, ^5C[3] = 10.
+
+In general, 
+
+^nC[r] = n!/(r!(n-r)!) where r <= n, n! = n*(n-1)*(n-2)*...*3*2*1, and 0! = 1.
+
+It is not until n = 23, that a value exceeds one-million: ^23C[10] = 1144066.
+
+How many values of ^nC[r], for 1 <= n <= 100, are greater than one-million?
+
+
+Solution:
+Simply calculating the factorials of numbers would exceed the limit of 2^64-1 in both the numerator
+and denominator in some occations.
+
+For this reason, must split up what the factorials would be and remove common factors as n!/(n-2)! 
+is going to be n*(n-1) since every other term would get cancelled out. 
+
+Furthermore, since there are two factors on the bottom, we must split up what would be multiplied out
+into their prime factors and divide them out, further simplifying the problem. 
+
+Once finished, multiply the denominator by 1,000,000. Then multiply the numerator until either it is
+greater than the product of denominator and 1,000,000 or until there are no numbers left to multiply.

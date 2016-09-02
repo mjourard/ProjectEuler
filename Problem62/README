@@ -1,0 +1,13 @@
+
+*********PROBLEM**************
+The cube, 41063625 (345^3), can be permuted to produce two other cubes: 56623104 (384^3) and 66430125 (405^3). In fact, 41063625 is the smallest cube which has exactly three permutations of its digits which are also cube.
+
+Find the smallest cube for which exactly five permutations of its digits are cube.
+
+
+
+
+********SOLUTION************
+Alright, so the idea is to increment a base number, cube it, and then compare the number of occurances of each digit. Then, create a string that represents the greatest permutation of the cube.
+This is a key to a dictionary, and the value of the dictionary will be a 2-tuple, with the first element being the smallest base number to generate the cube permutation, and the second being a list of the cubes found 
+so far that generates the string. 

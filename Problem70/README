@@ -1,0 +1,73 @@
+PROBLEM 70
+
+Euler's Totient function, φ(n) [sometimes called the phi function], is used to determine the number of positive numbers less than or equal to n which are relatively prime to n. 
+For example, as 1, 2, 4, 5, 7, and 8, are all less than nine and relatively prime to nine, φ(9)=6.
+The number 1 is considered to be relatively prime to every positive number, so φ(1)=1.
+
+Interestingly, φ(87109)=79180, and it can be seen that 87109 is a permutation of 79180.
+
+Find the value of n, 1 < n < 107, for which φ(n) is a permutation of n and the ratio n/φ(n) produces a minimum.
+
+-----------------------------------------------------------------------------------------------
+REQUIREMENTS
+
+Will need a function to check if 2 numbers are permutations of one another. Easiest way is probably counting sort 
+and compare the lists (python)
+
+-----------------------------------------------------------------------------------------------
+Monday April 21, 2014
+
+Initial thoughts are to simply generate a list of the prime factors of an increasing number from 1 to 1,000,000, we will call this, pIter
+and then attempt to divide every number up to that number by the list of primes, we will call the lesser number, lesserIter. If any of the primes in the list divide evenly into
+lesserIter, then it and pIter are not relatively prime.
+
+Some optimizations are maybe to only check every other number if pIter is even. 
+Also, if the lesserIter is a prime, check it against the list. If it's not there, then lesserIter is relatively prime to pIter
+
+Finally, do floating point division and find the value n/φ(n). If it is less than the current minimum, set it as the current minimum and save the value of n
+
+------------------------------------------------------------------------------------------------------------
+UPDATE:
+Ok, so brute force didn't work(surprise surprise)
+Doing some research, there is actually a formula to calculate Euler's totient, which I believe is where my program is spending most of it's time.
+The formula of phi(n) = n*product(1-(1/p)) such that p|n
+Which is basically saying you multiply n by the (1 - the inverse of all its prime factors)
+
+Small optimizations here and there, but I'm not sure how I'm going to get this done in under a minute...
+
+------------------------------------------------------------------------------------------------------------
+SECOND UPDATE:
+After trying for a while, I was unable to get it to run in under a minute.
+I turned to the internet and found ideas on how to solve it faster. 
+We are looking for the value closest to 1 such that 
+n/ (n * (1 - 1/p1) * (1 - 1/p2) * ... * (1 - 1/pk) is closest to 1. 
+
+Since we want the denominator to be as high as possible, 
+we can safely assume the answer will be of two primes.
+
+We know it can't be a prime, because all primes denoted n, have n-1 numbers relatively prime to them.
+n and n-1 can't be permutations of each other.
+So, we are looking for two primes such that p1*p2 = n
+We can use that to make the calculation of phi easier.
+We simply multiply by p1p2/p1p2 = 1.
+Since p1p2 = n, that eliminates n
+
+phi(n) = n * (1 - 1/p1) * (1 - 1/p2)
+ = n * p1p2/p1p2 * (1 - 1/p1) * (1 - 1/p2)
+ = p1 * p2 * (1 - 1/p1) * (1 - 1/p2)
+
+Multiplying p1 into term 2 and p2 into term 3 we get:
+ = (p1 - 1)(p2 - 1)
+
+
+That's an easier phi to deal with, but we need to eliminate some of the primes to check for. 
+
+Our ceiling is 10,000,000 so we must use primes that together make numbers roughly equal to that.
+10,000,000 ^ (1/2) is roughly 3162, so we want two primes roughly equal to that.
+
+It's probably safe to use a range of 1500 to 5500.
+
+So now, we just loop through the new list we've created and apply the formula
+phi(n) = (p1 - 1)(p2 -1)
+and if the result is a permutation of p1p2, check if dividing the two would 
+make a minimum
